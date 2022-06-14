@@ -47,6 +47,7 @@
     margin: auto;
     color: white;
     grid-template-columns: repeat(4, 1fr);
+    background-color: black ;
   }
 
   .containerSeachs, .search  {
