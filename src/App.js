@@ -1,14 +1,14 @@
-
-import './App.css';
-import { GetUsers } from './Component/GetUsers';
+import "./App.css";
+import { GetUsers } from "./Component/GetUsers";
+import { UserProvider } from "./UserProvider/UserProvider";
 
 function App() {
   return (
-    <div className="App-header d-flex">
-      <header className="App-header">
-          <GetUsers/>
-      </header>
-    </div>
+    <UserProvider>
+      <div className="Principal">
+        <GetUsers />
+      </div>
+    </UserProvider>
   );
 }
 

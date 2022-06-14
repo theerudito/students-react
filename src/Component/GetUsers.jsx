@@ -1,46 +1,52 @@
-import React, { Fragment } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-
-import { GetApi } from "../Helpers/GetApiAxios";
-
-import "../Styles/card.css";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "../UserProvider/UserProvider";
 import { CardApp } from "./Card";
 
-const inicialState = [
-  {
-    id: Date.now(),
-    firstName: "Jorge",
-    lastName: "Loor",
-    pic: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png",
-    email: "erudito@gmail.com",
-    city: "Ecuador",
-    company: "Heaven",
-    skill: "JavaScript",
-    grades: ["78", "100", "92", "86", "89", "88", "91", "87"],
-  },
-];
-
 export const GetUsers = () => {
-  const [users, setUsers] = useState(inicialState);
+  const { serch, searchUser, results, tag } = useContext(UserContext);
+  const [searchTag, setSearchTag] = useState("");
 
-  //console.log(users[0]);
+  const searchTagData = (e) => {
+    const results = !searchTag
+      ? tag
+      : tag.filter((dato) =>
+          dato.tag1.toLowerCase().includes(searchTag.toLocaleLowerCase())
+        );
+        console.log(results);
+      return results;
+  };
 
   useEffect(() => {
-    obtenerDatos();
+    searchTagData();
   }, []);
-
-  const obtenerDatos = async () => {
-    const updateUser = await GetApi();
-    //console.log(updateUser);
-    setUsers(updateUser);
-  };
 
   return (
     <>
-      {users.map((item) => (
-        <CardApp item={item} />
-      ))}
+      <div className="containerSeach">
+        <input
+          value={serch}
+          onChange={searchUser}
+          type="text"
+          placeholder="Seach by Name, Company, Skill, City"
+          className="search"
+        />
+      </div>
+
+      <div className="containerSeach">
+        <input
+          value={searchTag}
+          onChange={(e) => setSearchTag(e.target.value)}
+          type="text"
+          placeholder="Seach by Tag"
+          className="search"
+        />
+      </div>
+
+      <div className="body">
+        {results.map((item) => (
+          <CardApp item={item} key={item.id} dato={searchTagData} />
+        ))}
+      </div>
     </>
   );
 };
